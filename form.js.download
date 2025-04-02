@@ -1,0 +1,52 @@
+		
+		var loginrules=new Array();
+		loginrules[0]='user|required|Enter Username';			
+    	loginrules[1]='password:Password|required|Enter password';
+		loginrules[3]='type:Login As|required|Select Any One';
+		
+		
+		var contactrules=new Array();
+		contactrules[0]='txtname|required|Enter Your Name';
+		contactrules[1]='txtphone|required|Enter Your Phone Number';
+		contactrules[2]='txtphone|numeric|Enter Numbers Only';	
+		contactrules[3]='txtemailid|required|Enter Your Email';
+		contactrules[4]='txtemailid|email|Enter valid Email Id';				
+		contactrules[5]='txtenquiry|required|Enter Your Message';
+		contactrules[6]='txtcode|required|Enter Verification Code';	
+    
+	
+	function funcValidate(cntrlnm){		
+			var usrcode = document.getElementById(cntrlnm).value;			
+			if(usrcode != ""){				
+				var url = "chkvalidname.php?vrfcode="+usrcode;	
+				
+				xmlHttp	= GetXmlHttpObject(stChngVrfCode);
+				xmlHttp.open("GET", url , true);
+				xmlHttp.send(null);	
+				//alert(url);
+			}	
+			else{
+				document.getElementById('spnerror_txtcode').innerHTML = "";								
+			}		
+		}
+		function stChngVrfCode(){ 
+			if (xmlHttp.readyState==4 || xmlHttp.readyState=="complete"){ 	
+				var temp=xmlHttp.responseText;
+				if(temp == 'Invalid'){	
+					document.getElementById('spnerror_txtcode').innerHTML = "<font color='#f79141600'>Invalid Verification Code</font>";								
+					document.getElementById('txtcode').focus();
+				}
+				else{
+					document.getElementById('spnerror_txtcode').innerHTML = "";								
+				}
+			}
+		}	
+		
+
+
+function refreshCaptcha(){
+		var img = document.images['captchaimg'];
+		img.src = img.src.substring(0,img.src.lastIndexOf("?"))+"?rand="+Math.random()*1000;
+	}		
+		
+
